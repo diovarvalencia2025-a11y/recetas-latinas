@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabores Latinos — Recetas Auténticas de Latinoamérica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F0C96E;
+  --dark: #0a0906;
+  --dark2: #111009;
+  --text: #F2EDE4;
+  --text-dim: rgba(242,237,228,0.45);
+  --red: #8B2020;
+}
+
+html { scroll-behavior: auto; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ===================== NAV ===================== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 3rem;
+  transition: background 0.4s, backdrop-filter 0.4s;
+}
+nav.scrolled {
+  background: rgba(10,9,6,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  color: var(--text-dim); text-decoration: none;
+  font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(201,168,76,0.4);
+  padding: 0.55rem 1.4rem; background: transparent; cursor: pointer;
+  transition: all 0.3s; font-family: 'Inter', sans-serif;
+}
+.nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+/* ===================== HERO ===================== */
+#hero {
+  position: relative; height: 100vh; overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('hero.jpg');
+  background-size: cover; background-position: center;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+.hero-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10,9,6,1) 0%,
+    rgba(10,9,6,0.6) 40%,
+    rgba(10,9,6,0.2) 70%,
+    rgba(10,9,6,0.4) 100%
+  );
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 3rem 5rem;
+  max-width: 700px;
+}
+.hero-tag {
+  font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem; opacity: 0;
+  font-family: 'Inter', sans-serif;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 900; line-height: 0.95;
+  color: var(--text); margin-bottom: 0.3rem;
+  opacity: 0; transform: translateY(40px);
+}
+.hero-title em {
+  font-style: italic; font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 0.9rem; color: var(--text-dim); margin-top: 1.5rem;
+  line-height: 1.7; max-width: 420px;
+  opacity: 0; transform: translateY(20px);
+}
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; right: 3rem; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.hero-scroll span {
+  font-size: 0.65rem; letter-spacing: 0.3em; color: var(--text-dim);
+  text-transform: uppercase; writing-mode: vertical-rl;
+}
+.scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* ===================== COLOMBIA INTRO ===================== */
+#colombia-intro {
+  padding: 8rem 3rem 5rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  align-items: center; max-width: 1400px; margin: 0 auto;
+}
+.intro-flag {
+  font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
+}
+.intro-flag::before {
+  content: ''; display: block; width: 30px; height: 1px; background: var(--gold);
+}
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 900; line-height: 1; margin-bottom: 2rem;
+}
+.intro-title em {
+  display: block; font-style: italic; font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.intro-text {
+  font-size: 0.95rem; color: var(--text-dim); line-height: 1.9;
+  margin-bottom: 2rem;
+}
+.intro-stats {
+  display: flex; gap: 2.5rem;
+}
+.intro-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.intro-stat-label {
+  font-size: 0.68rem; color: var(--text-dim); letter-spacing: 0.15em;
+  text-transform: uppercase; margin-top: 0.2rem;
+}
+.intro-image {
+  position: relative; height: 500px; overflow: hidden;
+}
+.intro-image-badge {
+  position: absolute; bottom: 1.5rem; right: 1.5rem; z-index: 2;
+  background: rgba(10,9,6,0.85); backdrop-filter: blur(10px);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 0.8rem 1.2rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem; color: var(--gold); font-style: italic;
+}
+.intro-collage {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+}
+.intro-collage-item {
+  overflow: hidden; position: relative;
+}
+.intro-collage-item:first-child {
+  grid-row: 1 / 3;
+}
+.intro-collage-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.82) saturate(1.2) contrast(1.05);
+  transition: transform 0.6s ease;
+}
+.intro-collage-item:hover img { transform: scale(1.06); }
+.intro-collage-item::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(10,9,6,0.25), transparent);
+  pointer-events: none;
+}
+
+/* ===================== RECETAS HEADER ===================== */
+.recipes-header {
+  text-align: center; padding: 3rem 3rem 2rem;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.recipes-header-label {
+  font-size: 0.68rem; letter-spacing: 0.5em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 1rem;
+}
+.recipes-header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900;
+}
+.recipes-header-title em {
+  font-style: italic; font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.recipes-counter {
+  font-size: 0.7rem; letter-spacing: 0.3em; color: var(--text-dim);
+  margin-top: 0.8rem;
+}
+
+/* ===================== HORIZONTAL SCROLL ===================== */
+#recipes-scroll {
+  position: relative;
+}
+.recipes-pin-wrapper {
+  overflow: hidden;
+}
+.recipes-track {
+  display: flex; width: max-content;
+}
+
+/* ===================== RECIPE CARD ===================== */
+.recipe-card {
+  width: 100vw; height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.recipe-card:nth-child(even) .recipe-image { order: -1; }
+
+.recipe-image {
+  position: relative; overflow: hidden;
+}
+.recipe-image img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.08);
+  filter: brightness(0.8) saturate(1.15) contrast(1.05);
+  transition: transform 0.1s;
+}
+.recipe-image::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(10,9,6,0.4), transparent);
+}
+.recipe-card:nth-child(even) .recipe-image::after {
+  background: linear-gradient(to left, rgba(10,9,6,0.4), transparent);
+}
+
+.recipe-info {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 3.5rem; background: var(--dark2);
+  position: relative; overflow: hidden;
+}
+.recipe-info::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent);
+}
+
+.recipe-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; font-weight: 900; line-height: 1;
+  color: rgba(201,168,76,0.06); position: absolute;
+  top: 2rem; right: 2.5rem; pointer-events: none;
+  letter-spacing: -0.02em;
+}
+.recipe-country {
+  font-size: 0.65rem; letter-spacing: 0.5em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.recipe-country::before {
+  content: ''; display: block; width: 20px; height: 1px; background: var(--gold);
+}
+.recipe-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 900;
+  line-height: 1.05; margin-bottom: 0.4rem;
+}
+.recipe-name em {
+  display: block; font-style: italic; font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.recipe-desc {
+  font-size: 0.88rem; color: var(--text-dim); line-height: 1.8;
+  margin: 1rem 0 1.5rem; max-width: 380px;
+}
+.recipe-divider {
+  width: 40px; height: 1px; background: rgba(201,168,76,0.3); margin-bottom: 1.5rem;
+}
+
+/* INGREDIENTS */
+.ingredients-title {
+  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.8rem;
+}
+.ingredients-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.ingredient-item {
+  font-size: 0.8rem; color: var(--text-dim);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.ingredient-item::before {
+  content: ''; display: block; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--gold); flex-shrink: 0;
+}
+
+/* STEPS */
+.steps-title {
+  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.8rem;
+}
+.steps-list {
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.step-item {
+  display: flex; gap: 0.8rem; align-items: flex-start;
+}
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem; font-style: italic;
+  color: var(--gold); min-width: 18px; padding-top: 0.1rem;
+}
+.step-text {
+  font-size: 0.8rem; color: var(--text-dim); line-height: 1.6;
+}
+
+/* DIFFICULTY BADGE */
+.recipe-meta {
+  display: flex; gap: 1rem; margin-top: 1.5rem; align-items: center;
+}
+.meta-badge {
+  font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--text-dim);
+}
+.meta-badge.gold { border-color: var(--gold); color: var(--gold); }
+
+/* ===================== SCROLL INDICATOR ===================== */
+.scroll-progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200;
+  background: rgba(201,168,76,0.1);
+}
+.scroll-progress-fill {
+  height: 100%; background: linear-gradient(to right, var(--gold), var(--gold-light));
+  transform-origin: left; transform: scaleX(0);
+}
+
+.recipe-nav {
+  position: fixed; right: 2rem; top: 50%; transform: translateY(-50%);
+  z-index: 100; display: flex; flex-direction: column; gap: 0.6rem;
+}
+.recipe-nav-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(201,168,76,0.2);
+  transition: all 0.3s; cursor: pointer;
+}
+.recipe-nav-dot.active {
+  background: var(--gold); transform: scale(1.5);
+}
+
+/* ===================== NEXT SECTION TEASER ===================== */
+#next-section {
+  height: 60vh; display: flex; align-items: center; justify-content: center;
+  background: var(--dark);
+  border-top: 1px solid rgba(201,168,76,0.08);
+  text-align: center; padding: 3rem;
+}
+.next-label {
+  font-size: 0.65rem; letter-spacing: 0.5em; color: var(--gold); margin-bottom: 1rem;
+}
+.next-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; margin-bottom: 1rem;
+}
+.next-title em {
+  font-style: italic; font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.next-sub { font-size: 0.85rem; color: var(--text-dim); }
+.next-flags { font-size: 2rem; margin-top: 1.5rem; letter-spacing: 0.5rem; }
+
+/* FOOTER */
+footer {
+  background: var(--dark2); padding: 3rem;
+  border-top: 1px solid rgba(201,168,76,0.08);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 900; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.footer-copy { font-size: 0.72rem; color: var(--text-dim); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  #colombia-intro { grid-template-columns: 1fr; gap: 2rem; padding: 5rem 1.5rem 3rem; }
+  .intro-image { height: 280px; }
+  .recipe-card { grid-template-columns: 1fr; grid-template-rows: 45vh 55vh; }
+  .recipe-card:nth-child(even) .recipe-image { order: 0; }
+  .recipe-info { padding: 2rem 1.5rem; }
+  .ingredients-grid { grid-template-columns: 1fr; }
+  .recipe-number { font-size: 3rem; }
+}
+
+/* LOADING */
+#loader {
+  position: fixed; inset: 0; background: var(--dark);
+  z-index: 9999; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.6s ease;
+}
+#loader.out { opacity: 0; pointer-events: none; }
+.loader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 900; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+}
+.loader-bar-wrap { width: 180px; height: 1px; background: rgba(255,255,255,0.08); }
+.loader-bar { height: 100%; width: 0%; background: var(--gold); transition: width 0.08s; }
+.loader-text { font-size: 0.65rem; letter-spacing: 0.35em; color: var(--text-dim); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Sabores Latinos</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-text" id="loader-text">PREPARANDO LOS INGREDIENTES...</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="scroll-progress-bar"><div class="scroll-progress-fill" id="prog"></div></div>
+
+<!-- RECIPE NAV DOTS -->
+<div class="recipe-nav" id="recipe-nav">
+  <div class="recipe-nav-dot active" data-i="0"></div>
+  <div class="recipe-nav-dot" data-i="1"></div>
+  <div class="recipe-nav-dot" data-i="2"></div>
+  <div class="recipe-nav-dot" data-i="3"></div>
+  <div class="recipe-nav-dot" data-i="4"></div>
+  <div class="recipe-nav-dot" data-i="5"></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Sabores Latinos</div>
+  <ul class="nav-links">
+    <li><a href="#colombia-intro">Colombia</a></li>
+    <li><a href="#">Venezuela</a></li>
+    <li><a href="#">Nicaragua</a></li>
+    <li><a href="#">Brasil</a></li>
+    <li><a href="#">Guatemala</a></li>
+  </ul>
+  <button class="nav-cta">Todas las Recetas</button>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Cocina Auténtica Latinoamericana</p>
+    <h1 class="hero-title">
+      El Sabor que<br>
+      <em>nos une</em>
+    </h1>
+    <p class="hero-sub">
+      Fritos dorados, masa trabajada con amor y recetas que viajan de generación en generación.
+      Bienvenido a la cocina real de América Latina.
+    </p>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ==================== COLOMBIA INTRO ==================== -->
+<section id="colombia-intro">
+  <div class="intro-left">
+    <div class="intro-flag">🇨🇴 Colombia</div>
+    <h2 class="intro-title">
+      Tierra de<br>
+      <em>Fritos y Sabor</em>
+    </h2>
+    <p class="intro-text">
+      La cocina colombiana es una celebración de texturas y contrastes: el crujido del frito dorado,
+      la cremosidad del relleno y el calor de la comida hecha en casa. En cada esquina del Caribe
+      colombiano encontrarás estas delicias que cuentan la historia de un pueblo vibrante y generoso.
+    </p>
+    <p class="intro-text">
+      Plátano, yuca, papa y maíz son los protagonistas de una gastronomía que mezcla herencias
+      indígenas, africanas y españolas en una sola bocado irresistible.
+    </p>
+    <div class="intro-stats">
+      <div>
+        <div class="intro-stat-num">6</div>
+        <div class="intro-stat-label">Recetas Clásicas</div>
+      </div>
+      <div>
+        <div class="intro-stat-num">3</div>
+        <div class="intro-stat-label">Regiones</div>
+      </div>
+      <div>
+        <div class="intro-stat-num">∞</div>
+        <div class="intro-stat-label">Años de Tradición</div>
+      </div>
+    </div>
+  </div>
+  <div class="intro-image">
+    <img src="colombia-intro.jpg" alt="Fritos Colombianos">
+    <div class="intro-image-badge">Fritos Colombianos</div>
+  </div>
+</section>
+
+<!-- ==================== RECETAS HEADER ==================== -->
+<div class="recipes-header">
+  <div class="recipes-header-label">Recetas de Colombia</div>
+  <h2 class="recipes-header-title">Los Fritos <em>más Amados</em></h2>
+  <p class="recipes-counter">Desliza para explorar · 6 recetas</p>
+</div>
+
+<!-- ==================== HORIZONTAL SCROLL RECETAS ==================== -->
+<section id="recipes-scroll">
+  <div class="recipes-pin-wrapper" id="recipes-pin">
+    <div class="recipes-track" id="recipes-track">
+
+      <!-- RECETA 1: PATACÓN RELLENO -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="patacones.jpg" alt="Patacón Relleno">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">01</div>
+          <div class="recipe-country">Colombia · Costa Caribe</div>
+          <h3 class="recipe-name">Patacón<em>Relleno</em></h3>
+          <p class="recipe-desc">Plátano verde aplastado y frito dos veces hasta quedar crujiente, relleno generosamente con pollo o carne guisada, hogao, aguacate y queso. El rey de la calle colombiana.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">2 plátanos verdes</div>
+            <div class="ingredient-item">300g pollo o carne</div>
+            <div class="ingredient-item">2 tomates maduros</div>
+            <div class="ingredient-item">1 cebolla cabezona</div>
+            <div class="ingredient-item">1 aguacate maduro</div>
+            <div class="ingredient-item">Queso costeño al gusto</div>
+            <div class="ingredient-item">Aceite para freír</div>
+            <div class="ingredient-item">Sal, ajo, comino</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Pela y corta los plátanos en rodajas gruesas. Fríe en aceite caliente por 3 min hasta dorar.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Aplasta cada rodaja con un vaso o tostonera. Fríe nuevamente 3-4 min hasta quedar crujiente.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Guisa el pollo o carne con tomate, cebolla y especias hasta obtener el hogao tradicional.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Arma: patacón, relleno, aguacate en rodajas, queso desmenuzado y salsa rosada. ¡Sirve caliente!</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Fácil</div>
+            <div class="meta-badge">30 min</div>
+            <div class="meta-badge">4 porciones</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECETA 2: AREPA DE HUEVO -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="arepa-huevo.jpg" alt="Arepa de Huevo">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">02</div>
+          <div class="recipe-country">Colombia · Luruaco, Atlántico</div>
+          <h3 class="recipe-name">Arepa de<em>Huevo</em></h3>
+          <p class="recipe-desc">La arepa más icónica de la Costa Caribe: masa de maíz frita, abierta con destreza para introducir un huevo entero y volver al aceite. Crujiente por fuera, tierna por dentro.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">2 tazas harina maíz precocida</div>
+            <div class="ingredient-item">4 huevos</div>
+            <div class="ingredient-item">1½ taza agua tibia</div>
+            <div class="ingredient-item">1 cdta sal</div>
+            <div class="ingredient-item">1 cdta mantequilla</div>
+            <div class="ingredient-item">Aceite abundante</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Mezcla la harina con agua, sal y mantequilla. Amasa hasta obtener una masa suave. Forma discos de 1cm.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Fríe los discos en aceite caliente (170°C) por 4 min hasta que floten e inflen. Retira y escurre.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Abre un pequeño orificio con cuidado e introduce el huevo crudo. Sella el borde presionando.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Vuelve al aceite caliente por 3 min más. Lista cuando el exterior esté dorado. ¡Sirve inmediatamente!</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Media</div>
+            <div class="meta-badge">25 min</div>
+            <div class="meta-badge">4 arepas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECETA 3: PAPA RELLENA -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="papa-rellena.jpg" alt="Papa Rellena">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">03</div>
+          <div class="recipe-country">Colombia · Nacional</div>
+          <h3 class="recipe-name">Papa<em>Rellena</em></h3>
+          <p class="recipe-desc">Bola de papa cocida y molida, rellena de carne o pollo guisado con verduras, empanizada y frita hasta quedar perfectamente dorada. Un abrazo caliente en forma de frito.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">6 papas pastusas grandes</div>
+            <div class="ingredient-item">300g carne/pollo molido</div>
+            <div class="ingredient-item">1 zanahoria rallada</div>
+            <div class="ingredient-item">1 cebolla larga</div>
+            <div class="ingredient-item">2 huevos (1 para masa)</div>
+            <div class="ingredient-item">Pan rallado</div>
+            <div class="ingredient-item">Cilantro fresco</div>
+            <div class="ingredient-item">Sal, pimienta, comino</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Cocina las papas con sal hasta quedar blandas. Escurre, pela y machaca con 1 huevo, sal y pimienta.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Sofríe la carne con cebolla, zanahoria, cilantro y especias. Deja enfriar el relleno.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Forma bolas de papa, aplana en tu mano, coloca el relleno en el centro y cierra dando forma ovalada.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Pasa por huevo batido y pan rallado. Fríe en aceite caliente por 4-5 min hasta dorar completamente.</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Fácil</div>
+            <div class="meta-badge">45 min</div>
+            <div class="meta-badge">8 papas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECETA 4: CARIMAÑOLA -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="carimañola.jpg" alt="Carimañola de Yuca">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">04</div>
+          <div class="recipe-country">Colombia · Bolívar y Caribe</div>
+          <h3 class="recipe-name">Carimañola<em>de Yuca</em></h3>
+          <p class="recipe-desc">Prima hermana de la papa rellena pero con yuca: más densa, más sabrosa y con esa textura única que solo la yuca puede dar. Rellena de carne o pollo guisado con sofrito costeño.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">1kg yuca fresca</div>
+            <div class="ingredient-item">250g pollo/carne molida</div>
+            <div class="ingredient-item">2 tomates</div>
+            <div class="ingredient-item">1 cebolla cabezona</div>
+            <div class="ingredient-item">Ajo, sal, pimienta</div>
+            <div class="ingredient-item">Aceite para freír</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Pela y cocina la yuca en agua con sal por 20 min hasta quedar muy blanda. Retira el hilo central.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Machaca la yuca caliente hasta obtener masa homogénea. Debe quedar sin grumos. Deja enfriar.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Prepara el relleno sofriendo la carne con tomate, cebolla y ajo hasta que seque bien.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Forma las carimañolas en forma de torpedo. Rellena, cierra bien y fríe 5 min hasta dorar.</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Media</div>
+            <div class="meta-badge">50 min</div>
+            <div class="meta-badge">10 piezas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECETA 5: EMPANADA -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="empanadas.jpg" alt="Empanada Colombiana">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">05</div>
+          <div class="recipe-country">Colombia · Nacional</div>
+          <h3 class="recipe-name">Empanada<em>Colombiana</em></h3>
+          <p class="recipe-desc">Masa de maíz o harina, rellena de papa con carne, pollo o queso, sellada y frita hasta quedar perfecta. Acompañada de ají casero es la merienda más querida del país.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">2 tazas harina maíz</div>
+            <div class="ingredient-item">200g carne/pollo/queso</div>
+            <div class="ingredient-item">2 papas medianas</div>
+            <div class="ingredient-item">Cebolla, tomate</div>
+            <div class="ingredient-item">Cilantro, ají</div>
+            <div class="ingredient-item">Sal, comino al gusto</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Prepara la masa con harina, agua caliente y sal. Amasa hasta que sea suave y manejable.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Cocina las papas y mézclalas con el guiso de carne o pollo. Sazona bien con comino y cilantro.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Forma círculos delgados de masa, coloca el relleno en un lado y dobla sellando los bordes con un tenedor.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Fríe en aceite a 175°C por 3-4 min por lado. Escurre y sirve con ají de maracuyá casero.</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Fácil</div>
+            <div class="meta-badge">40 min</div>
+            <div class="meta-badge">12 und</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECETA 6: BUÑUELO -->
+      <div class="recipe-card">
+        <div class="recipe-image">
+          <img src="bunuelos.jpg" alt="Buñuelo Colombiano">
+        </div>
+        <div class="recipe-info">
+          <div class="recipe-number">06</div>
+          <div class="recipe-country">Colombia · Navidad & Todo el año</div>
+          <h3 class="recipe-name">Buñuelo<em>Colombiano</em></h3>
+          <p class="recipe-desc">Bolitas de masa de maíz y queso que se expanden en el aceite hasta quedar esponjosas y huecas por dentro. Crujientes afuera, suaves por dentro, con ese sabor a queso que enamora.</p>
+          <div class="recipe-divider"></div>
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-grid">
+            <div class="ingredient-item">1 taza harina de maíz</div>
+            <div class="ingredient-item">1 taza almidón de yuca</div>
+            <div class="ingredient-item">250g queso campesino</div>
+            <div class="ingredient-item">2 huevos</div>
+            <div class="ingredient-item">1 cdta azúcar</div>
+            <div class="ingredient-item">½ cdta sal</div>
+            <div class="ingredient-item">1 cdta polvo hornear</div>
+            <div class="ingredient-item">Aceite para freír</div>
+          </div>
+          <div class="steps-title">Preparación</div>
+          <div class="steps-list">
+            <div class="step-item"><span class="step-num">I</span><span class="step-text">Ralla el queso finamente. Mezcla con harina, almidón, polvo de hornear, sal y azúcar.</span></div>
+            <div class="step-item"><span class="step-num">II</span><span class="step-text">Agrega los huevos y amasa bien. Si la masa queda muy seca, agrega un poco de agua fría.</span></div>
+            <div class="step-item"><span class="step-num">III</span><span class="step-text">Forma bolitas del tamaño de una nuez. El aceite debe estar a 160°C — temperatura baja para que inflen.</span></div>
+            <div class="step-item"><span class="step-num">IV</span><span class="step-text">Fríe 8-10 min sin voltear hasta que estén dorados y floten solos. ¡No apresures el fuego!</span></div>
+          </div>
+          <div class="recipe-meta">
+            <div class="meta-badge gold">Fácil</div>
+            <div class="meta-badge">30 min</div>
+            <div class="meta-badge">20 buñuelos</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /recipes-track -->
+  </div><!-- /recipes-pin-wrapper -->
+</section>
+
+<!-- NEXT SECTION TEASER -->
+<section id="next-section">
+  <div>
+    <div class="next-label">Próximamente</div>
+    <h2 class="next-title">El Viaje <em>continúa</em></h2>
+    <p class="next-sub">Más países, más sabores, más recetas auténticas de América Latina</p>
+    <div class="next-flags">🇻🇪 🇳🇮 🇧🇷 🇬🇹</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sabores Latinos</div>
+  <div class="footer-copy">© 2026 Sabores Latinos · Recetas auténticas de América Latina</div>
+  <div class="footer-copy">
+    <a href="#" style="color:var(--text-dim);text-decoration:none;margin:0 0.5rem">Privacidad</a>
+    <a href="#" style="color:var(--text-dim);text-decoration:none;margin:0 0.5rem">Contacto</a>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ---- LOADER ----
+let pct = 0;
+const bar = document.getElementById('loader-bar');
+const loaderText = document.getElementById('loader-text');
+const messages = ['PREPARANDO LOS INGREDIENTES...','CALENTANDO EL ACEITE...','CASI LISTO...'];
+let msgI = 0;
+const iv = setInterval(() => {
+  pct += Math.random() * 20;
+  if (pct >= 100) {
+    pct = 100; clearInterval(iv);
+    loaderText.textContent = '¡A COMER!';
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('out');
+      setTimeout(() => document.getElementById('loader').remove(), 700);
+      initAnimations();
+    }, 500);
+  } else if (pct > 40 && msgI === 0) { msgI = 1; loaderText.textContent = messages[1]; }
+  else if (pct > 75 && msgI === 1) { msgI = 2; loaderText.textContent = messages[2]; }
+  bar.style.width = pct + '%';
+}, 100);
+
+function initAnimations() {
+
+  // NAV scroll behavior
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // HERO parallax
+  gsap.to('#hero-bg', {
+    y: 150, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  // Hero text entrance
+  gsap.to('.hero-tag',   { opacity: 1, duration: 1, delay: 0.2 });
+  gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1.2, delay: 0.4, ease: 'power3.out' });
+  gsap.to('.hero-sub',   { opacity: 1, y: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
+
+  // Hero bg scale
+  gsap.to('#hero-bg', { scale: 1, duration: 2, ease: 'power2.out', delay: 0.1 });
+
+  // COLOMBIA INTRO animations
+  gsap.from('.intro-flag',   { x: -30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '#colombia-intro', start: 'top 75%' } });
+  gsap.from('.intro-title',  { y: 40, opacity: 0, duration: 1, delay: 0.1, scrollTrigger: { trigger: '#colombia-intro', start: 'top 75%' } });
+  gsap.from('.intro-text',   { y: 30, opacity: 0, duration: 0.8, stagger: 0.2, delay: 0.2, scrollTrigger: { trigger: '#colombia-intro', start: 'top 75%' } });
+  gsap.from('.intro-stats',  { y: 20, opacity: 0, duration: 0.8, delay: 0.4, scrollTrigger: { trigger: '#colombia-intro', start: 'top 75%' } });
+  gsap.from('.intro-image',  { x: 60, opacity: 0, duration: 1.2, delay: 0.2, ease: 'power3.out', scrollTrigger: { trigger: '#colombia-intro', start: 'top 75%' } });
+
+  // RECIPES HEADER
+  gsap.from('.recipes-header-label', { opacity: 0, y: 20, duration: 0.8, scrollTrigger: { trigger: '.recipes-header', start: 'top 80%' } });
+  gsap.from('.recipes-header-title', { opacity: 0, y: 30, duration: 1, delay: 0.1, scrollTrigger: { trigger: '.recipes-header', start: 'top 80%' } });
+
+  // ---- HORIZONTAL SCROLL ----
+  const track = document.getElementById('recipes-track');
+  const cards = gsap.utils.toArray('.recipe-card');
+  const totalWidth = track.scrollWidth - window.innerWidth;
+  const dots = document.querySelectorAll('.recipe-nav-dot');
+
+  gsap.to(track, {
+    x: -totalWidth,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#recipes-pin',
+      start: 'top top',
+      end: () => '+=' + (totalWidth + window.innerHeight),
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        // Update nav dots
+        const progress = self.progress;
+        const activeIndex = Math.round(progress * (cards.length - 1));
+        dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+
+        // Update scroll progress bar
+        document.getElementById('prog').style.transform = `scaleX(${self.progress})`;
+
+        // Parallax images inside cards
+        const currentX = -totalWidth * progress;
+        cards.forEach((card, i) => {
+          const img = card.querySelector('img');
+          const cardOffset = i * window.innerWidth + currentX;
+          const relPos = cardOffset / window.innerWidth;
+          if (img) gsap.set(img, { x: relPos * 30 });
+        });
+      }
+    }
+  });
+
+  // Card entrance animations (image and text)
+  cards.forEach((card, i) => {
+    const info = card.querySelector('.recipe-info');
+    const img = card.querySelector('.recipe-image');
+
+    gsap.from(info.querySelectorAll('.recipe-country, .recipe-name, .recipe-desc, .recipe-divider, .ingredients-title, .ingredients-grid, .steps-title, .steps-list, .recipe-meta'), {
+      y: 25, opacity: 0, duration: 0.7, stagger: 0.06, ease: 'power2.out',
+      scrollTrigger: {
+        trigger: card,
+        containerAnimation: gsap.getById ? undefined : undefined,
+        start: 'left 80%',
+        toggleActions: 'play none none reverse',
+        scroller: null
+      }
+    });
+  });
+
+  // Nav dots click scroll
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const i = parseInt(dot.dataset.i);
+      const st = ScrollTrigger.getAll().find(t => t.vars.pin === true);
+      if (st) {
+        const targetScroll = st.start + (i / (cards.length - 1)) * (st.end - st.start - window.innerHeight);
+        gsap.to(window, { scrollTo: targetScroll, duration: 1, ease: 'power2.inOut' });
+      }
+    });
+  });
+
+  // NEXT SECTION
+  gsap.from('#next-section > div', {
+    y: 50, opacity: 0, duration: 1,
+    scrollTrigger: { trigger: '#next-section', start: 'top 75%' }
+  });
+
+  // Show/hide recipe nav dots
+  ScrollTrigger.create({
+    trigger: '#recipes-pin',
+    start: 'top top',
+    end: () => '+=' + (totalWidth + window.innerHeight),
+    onEnter: () => document.getElementById('recipe-nav').style.opacity = '1',
+    onLeave: () => document.getElementById('recipe-nav').style.opacity = '0',
+    onEnterBack: () => document.getElementById('recipe-nav').style.opacity = '1',
+    onLeaveBack: () => document.getElementById('recipe-nav').style.opacity = '0',
+  });
+  document.getElementById('recipe-nav').style.opacity = '0';
+  document.getElementById('recipe-nav').style.transition = 'opacity 0.4s';
+}
+</script>
+</body>
+</html>
